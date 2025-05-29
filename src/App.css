@@ -1,320 +1,529 @@
-/* General App Styling */
+/* Styling Global & Latar Belakang */
 .App {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(to bottom right, #2c3e50, #34495e); /* Dark, subtle gradient */
-  color: #ecf0f1;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden; /* Prevent scroll issues with animations */
-  position: relative; /* For absolute positioning of borders */
-  padding: 20px; /* Tambahkan padding agar konten tidak terlalu mepet ke pinggir */
-  box-sizing: border-box; /* Pastikan padding tidak menambah lebar total */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* Background gradient dinamis */
+    background: linear-gradient(135deg, #1a2a3a, #0a1520, #1a2a3a);
+    background-size: 400% 400%; /* Buat gradien lebih besar untuk animasi */
+    animation: gradientShift 25s ease infinite alternate; /* Animasi pergeseran gradien sangat lambat */
+    color: #ecf0f1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
+/* Keyframes untuk animasi latar belakang */
+@keyframes gradientShift {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+/* Judul Game */
 .game-title {
-  font-size: 3.5em;
-  font-weight: bold;
-  color: #61dafb; /* React blue */
-  text-shadow: 0 0 15px rgba(97, 218, 251, 0.7);
-  margin-bottom: 50px; /* Space from top/play button */
-  letter-spacing: 2px;
-  text-align: center; /* Pastikan rata tengah di layar kecil */
-  line-height: 1.2; /* Menghindari teks terlalu rapat */
+    font-size: 4.5em; /* Ukuran lebih besar */
+    font-weight: bold;
+    color: #8be9fd; /* Warna biru muda yang lebih cerah */
+    text-shadow: 0 0 25px rgba(139, 233, 253, 0.8), 0 0 10px rgba(139, 233, 253, 0.6); /* Glow lebih kuat */
+    margin-bottom: 60px;
+    letter-spacing: 3px; /* Jarak huruf sedikit lebih lebar */
+    text-align: center;
+    line-height: 1.2;
+    animation: pulsateTitle 2s ease-in-out infinite alternate; /* Animasi pulsasi judul */
 }
 
-/* --- Initial Screen --- */
+@keyframes pulsateTitle {
+    0% { transform: scale(1); text-shadow: 0 0 25px rgba(139, 233, 253, 0.8), 0 0 10px rgba(139, 233, 253, 0.6); }
+    100% { transform: scale(1.02); text-shadow: 0 0 35px rgba(139, 233, 253, 1), 0 0 15px rgba(139, 233, 253, 0.8); }
+}
+
+/* Initial Screen */
 .initial-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%; /* Take full height of parent App */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
+/* Play Button */
 .play-button {
-  font-size: 4em;
-  padding: 30px 60px;
-  background: linear-gradient(45deg, #00c6ff, #0072ff);
-  color: white;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 114, 255, 0.4);
-  transition: all 0.4s ease-in-out;
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 5px;
-  font-weight: bold;
-  white-space: nowrap; /* Mencegah teks PLAY patah baris */
+    font-size: 4.5em; /* Ukuran lebih besar */
+    padding: 35px 70px; /* Padding lebih besar */
+    background: linear-gradient(45deg, #8258fa, #501bf7); /* Gradien ungu-biru yang kuat */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Radius lebih besar */
+    cursor: pointer;
+    box-shadow: 0 15px 40px rgba(80, 27, 247, 0.5); /* Shadow lebih dalam */
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transisi lebih halus dan menarik */
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 5px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-transform: uppercase;
 }
 
 .play-button:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0, 114, 255, 0.6);
+    transform: translateY(-8px) scale(1.05); /* Efek melayang lebih tinggi */
+    box-shadow: 0 25px 60px rgba(80, 27, 247, 0.8); /* Shadow lebih dramatis */
+    background: linear-gradient(45deg, #9b6cff, #6f3bff); /* Warna gradien sedikit berubah */
 }
 
-/* Play button animation (when clicked, it moves up) */
-/* Class ini harus ditambahkan ke element App. Contoh di App.jsx: <div className={`App ${gamePhase === 'ready' ? 'ready' : ''}`}> */
 .App.ready .play-button {
-  animation: playButtonUp 0.5s forwards ease-out;
+    animation: playButtonUp 0.6s forwards cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animasi keluar lebih bouncy */
 }
 
 @keyframes playButtonUp {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-200px); opacity: 0; }
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-300px); opacity: 0; }
 }
 
-
-/* --- Ready Phase --- */
+/* Ready Phase (Hitung Mundur) */
 .ready-phase {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 5em;
-  font-weight: bold;
-  color: #f39c12; /* Orange */
-  text-shadow: 0 0 20px rgba(243, 156, 18, 0.7);
-  animation: fadeInOut 1s ease-in-out infinite alternate; /* Optional: pulse effect */
-  white-space: nowrap; /* Mencegah teks patah baris */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 6em; /* Ukuran lebih besar */
+    font-weight: bold;
+    color: #ffe066; /* Kuning keemasan */
+    text-shadow: 0 0 25px rgba(255, 224, 102, 0.9), 0 0 10px rgba(255, 224, 102, 0.7);
+    animation: pulseGlow 1s ease-in-out infinite alternate; /* Animasi pulse glow */
+    white-space: nowrap;
 }
 
-@keyframes fadeInOut {
-  0% { opacity: 0.5; }
-  100% { opacity: 1; }
+@keyframes pulseGlow {
+    0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); text-shadow: 0 0 25px rgba(255, 224, 102, 0.9); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); text-shadow: 0 0 35px rgba(255, 224, 102, 1); }
 }
 
-/* --- OSU Borders --- */
+/* OSU Borders */
 .osu-border {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 20px; /* Lebar border */
-  background-color: #e74c3c; /* Merah cerah ala OSU */
-  z-index: 1000; /* Pastikan di atas elemen lain */
-  transform: translateY(-100%); /* Sembunyikan di atas/bawah */
-  transition: transform 0.6s ease-out; /* Animasi turun */
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 25px; /* Sedikit lebih tebal */
+    background: linear-gradient(to right, #ff4c4c, #c0392b); /* Gradien merah */
+    z-index: 1000;
+    transform: translateY(-100%);
+    transition: transform 0.6s ease-out;
 }
 
 .osu-border.top {
-  top: 0;
+    top: 0;
 }
 
 .osu-border.bottom {
-  bottom: 0;
+    bottom: 0;
 }
 
 .osu-border.osu-border-in {
-  transform: translateY(0%); /* Turun ke posisi */
+    transform: translateY(0%);
 }
 
-
-/* --- Game Area --- */
+/* Area Game Utama */
 .game-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparan */
-  border-radius: 15px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  z-index: 500; /* Di bawah border tapi di atas latar */
-  max-width: 90%; /* Batasi lebar di layar kecil */
-  width: auto; /* Izinkan lebar menyesuaikan konten */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px; /* Padding lebih besar */
+    background: linear-gradient(180deg, rgba(16, 28, 40, 0.8), rgba(20, 35, 50, 0.8)); /* Gradien gelap yang lembut */
+    border-radius: 20px; /* Radius lebih besar */
+    border: 2px solid rgba(139, 233, 253, 0.3); /* Border biru muda subtle */
+    box-shadow: 
+        0 0 60px rgba(139, 233, 253, 0.4), /* Glow eksternal */
+        inset 0 0 30px rgba(0, 0, 0, 0.5); /* Inner shadow untuk kedalaman */
+    z-index: 500;
+    max-width: 95%; /* Lebih fleksibel */
+    width: 600px; /* Lebar tetap yang lebih baik */
+    transition: all 0.5s ease-in-out;
+    position: relative; /* Penting untuk posisi tombol pause */
 }
 
 .game-info {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 30px;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #bdc3c7;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 450px; /* Lebih lebar */
+    margin-bottom: 40px; /* Jarak lebih besar */
+    font-size: 1.8em; /* Ukuran teks lebih besar */
+    font-weight: bold;
+    color: #e0e6e9; /* Warna teks lebih terang */
+    text-shadow: 0 0 10px rgba(224, 230, 233, 0.3);
 }
 
 .lights-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 kolom */
-  grid-template-rows: repeat(2, 1fr); /* 2 baris, total 8 tombol */
-  gap: 20px; /* Jarak antar tombol */
-  width: 500px; /* Ukuran total grid */
-  height: 250px;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  max-width: 100%; /* Pastikan grid tidak melebihi lebar parent */
-  box-sizing: border-box; /* Penting untuk padding */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 25px; /* Jarak antar tombol lebih besar */
+    width: 100%; /* Mengisi penuh lebar parent */
+    max-width: 550px; /* Max lebar grid */
+    height: 280px; /* Tinggi disesuaikan */
+    padding: 25px; /* Padding lebih besar */
+    background-color: rgba(0, 0, 0, 0.4); /* Background grid lebih gelap */
+    border-radius: 15px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6); /* Inner shadow pada grid */
+    box-sizing: border-box;
 }
 
+/* Tombol Cahaya */
 .light-button {
-  width: 100px; /* Ukuran tombol cahaya */
-  height: 100px;
-  background-color: #34495e; /* Warna default tombol */
-  border-radius: 10px;
-  border: 3px solid #7f8c8d;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  /* Untuk sentuhan di HP */
-  -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru saat disentuh */
+    width: 100px; /* Ukuran standar */
+    height: 100px;
+    /* Gradien dasar tombol */
+    background: linear-gradient(160deg, #34495e, #2c3e50);
+    border-radius: 15px; /* Radius lebih besar */
+    border: 3px solid #6c7a89; /* Border abu-abu */
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2em; /* Ukuran angka lebih besar */
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Shadow teks */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Shadow tombol */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none; /* Agar teks tidak terseleksi */
 }
 
 .light-button.clickable {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .light-button.clickable:hover {
-  transform: scale(1.05);
-  background-color: #4a6681;
+    transform: scale(1.08); /* Scale lebih besar saat hover */
+    background: linear-gradient(160deg, #4a6681, #3b526b); /* Gradien sedikit terang saat hover */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
 }
 
 .light-button.active {
-  background-color: #61dafb; /* Warna saat menyala (biru terang) */
-  border-color: #61dafb;
-  box-shadow: 0 0 25px rgba(97, 218, 251, 0.9), 0 0 10px rgba(97, 218, 251, 0.7);
-  transform: scale(1.1); /* Sedikit membesar saat nyala */
+    /* Gradien dan glow saat aktif (dari game) */
+    background: linear-gradient(160deg, #61dafb, #2196f3); /* Gradien biru cerah */
+    border-color: #61dafb;
+    box-shadow: 0 0 35px rgba(97, 218, 251, 1), 0 0 15px rgba(97, 218, 251, 0.8);
+    transform: scale(1.15); /* Membesar lebih banyak saat nyala */
 }
 
-/* --- Game Over Screen --- */
+.light-button.player-pressed {
+    /* Gradien dan glow saat ditekan pemain */
+    background: linear-gradient(160deg, #2ecc71, #27ae60); /* Gradien hijau cerah */
+    border-color: #2ecc71;
+    box-shadow: 0 0 25px rgba(46, 204, 113, 1), 0 0 10px rgba(46, 204, 113, 0.8);
+    transform: scale(0.92); /* Mengecil lebih banyak saat ditekan */
+}
+
+/* Game Over Screen */
 .game-over-screen {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  background-color: rgba(44, 62, 80, 0.9);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
-  z-index: 1001; /* Di atas semuanya */
-  max-width: 90%; /* Batasi lebar di layar kecil */
-  box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: linear-gradient(135deg, rgba(44, 62, 80, 0.95), rgba(52, 73, 94, 0.95)); /* Gradien gelap */
+    padding: 50px; /* Padding lebih besar */
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(231, 76, 60, 0.6); /* Shadow dengan glow merah */
+    z-index: 1001;
+    max-width: 90%;
+    box-sizing: border-box;
 }
 
 .game-over-screen h2 {
-  color: #e74c3c; /* Merah */
-  font-size: 3em;
-  margin-bottom: 20px;
+    color: #e74c3c;
+    font-size: 3.5em; /* Ukuran lebih besar */
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(231, 76, 60, 0.7);
 }
 
 .game-over-screen p {
-  font-size: 1.8em;
-  margin-bottom: 30px;
+    font-size: 2em; /* Ukuran lebih besar */
+    margin-bottom: 40px;
+    color: #bdc3c7;
 }
 
 .restart-button {
-  padding: 15px 30px;
-  font-size: 1.5em;
-  background-color: #27ae60; /* Hijau */
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    padding: 20px 40px; /* Padding lebih besar */
+    font-size: 1.8em; /* Ukuran font lebih besar */
+    background: linear-gradient(45deg, #27ae60, #2ecc71); /* Gradien hijau */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.5);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .restart-button:hover {
-  background-color: #2ecc71;
+    background: linear-gradient(45deg, #37c271, #3cdc8a); /* Gradien sedikit terang saat hover */
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(46, 204, 113, 0.7);
 }
 
+/* --- High Score Display --- */
+.high-score-display {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ffe066; /* Kuning keemasan */
+    text-shadow: 0 0 10px rgba(255, 224, 102, 0.5);
+    z-index: 1000;
+}
 
-/* ==================================================================== */
-/* === MEDIA QUERIES FOR RESPONSIVE DESIGN (FOR MOBILE DEVICES) === */
-/* ==================================================================== */
+.new-high-score {
+    color: #2ecc71; /* Hijau cerah */
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: -15px; /* Sedikit naik */
+    margin-bottom: 20px;
+    animation: newHighScoreGlow 1s ease-in-out infinite alternate;
+}
 
-/* Small devices (phones, 600px and down) */
+@keyframes newHighScoreGlow {
+    0% { text-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+    100% { text-shadow: 0 0 15px rgba(46, 204, 113, 0.9); }
+}
+
+/* --- Game Over Buttons Layout --- */
+.game-over-buttons {
+    display: flex;
+    flex-direction: column; /* Tombol bertumpuk secara vertikal */
+    gap: 15px; /* Jarak antar tombol */
+    margin-top: 20px; /* Jarak dari teks skor */
+}
+
+/* --- Home Button (General Style for Game Over & Pause) --- */
+.home-button {
+    padding: 15px 30px;
+    font-size: 1.5em;
+    background: linear-gradient(45deg, #34495e, #2c3e50); /* Gradien abu-abu gelap */
+    color: #ecf0f1;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.home-button:hover {
+    background: linear-gradient(45deg, #4a6681, #3b526b); /* Lebih terang saat hover */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Pause Button (In-Game) --- */
+.pause-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(45deg, #f39c12, #e67e22); /* Gradien oranye */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Bentuk lingkaran */
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    z-index: 501; /* Pastikan di atas game-area */
+}
+
+.pause-button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(45deg, #ffb64a, #f59f42);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Pause Overlay --- */
+.pause-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Latar belakang semi-transparan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Pastikan di atas semua elemen lain */
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.pause-menu {
+    background: linear-gradient(135deg, #2c3e50, #34495e); /* Gradien gelap */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideIn 0.4s ease-out 0.2s forwards; /* Animasi masuk */
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.pause-menu h2 {
+    color: #61dafb;
+    font-size: 3em;
+    margin-bottom: 30px;
+}
+
+.pause-menu button {
+    display: block; /* Tombol jadi blok */
+    width: 200px; /* Lebar tombol */
+    margin: 15px auto; /* Margin atas/bawah dan auto horizontal */
+    padding: 15px 0;
+    font-size: 1.6em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Reuse existing button styles for Resume button */
+.pause-menu .resume-button {
+    background: linear-gradient(45deg, #27ae60, #2ecc71); /* Gradien hijau */
+    color: white;
+}
+
+.pause-menu .resume-button:hover {
+    background: linear-gradient(45deg, #37c271, #3cdc8a);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.7);
+}
+
+/* Reuse existing home-button style for Home button in pause menu */
+/* .pause-menu .home-button { sudah didefinisikan secara global} */
+
+/* Responsive Adjustments */
 @media only screen and (max-width: 600px) {
-  .App {
-      padding: 10px; /* Kurangi padding di layar kecil */
-  }
+    .App {
+        padding: 10px;
+    }
 
-  .game-title {
-      font-size: 2.2em; /* Perkecil ukuran font judul */
-      margin-bottom: 30px;
-  }
+    .game-title {
+        font-size: 2.8em;
+        margin-bottom: 40px;
+    }
 
-  .play-button {
-      font-size: 2.5em; /* Perkecil ukuran font tombol PLAY */
-      padding: 20px 40px; /* Sesuaikan padding */
-      letter-spacing: 3px;
-  }
+    .play-button {
+        font-size: 3em;
+        padding: 25px 50px;
+        letter-spacing: 3px;
+    }
 
-  .ready-phase {
-      font-size: 3em; /* Perkecil ukuran font 'Ready' text */
-  }
+    .ready-phase {
+        font-size: 4em;
+    }
 
-  .game-info {
-      font-size: 1.2em; /* Perkecil font info game */
-      margin-bottom: 20px;
-  }
+    .game-info {
+        font-size: 1.4em;
+        margin-bottom: 25px;
+    }
 
-  .lights-grid {
-      width: 100%; /* Ambil lebar penuh */
-      height: auto; /* Izinkan tinggi menyesuaikan */
-      grid-template-columns: repeat(2, 1fr); /* Ubah ke 2 kolom di HP */
-      grid-template-rows: repeat(4, 1fr); /* Ubah ke 4 baris */
-      gap: 15px; /* Kurangi jarak antar tombol */
-      padding: 15px;
-  }
+    .lights-grid {
+        width: 100%;
+        height: auto;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 18px;
+        padding: 18px;
+    }
 
-  .light-button {
-      width: 100%; /* Tombol memenuhi lebar kolom */
-      padding-bottom: 100%; /* Trick untuk membuat tombol berbentuk kotak (aspect ratio 1:1) */
-      height: 0; /* Set tinggi ke 0 agar padding-bottom yang mengontrol tinggi */
-      border-radius: 8px;
-      font-size: 1.2em; /* Perkecil font tombol */
-  }
+    .light-button {
+        width: 100%;
+        padding-bottom: 100%;
+        height: 0;
+        border-radius: 12px;
+        font-size: 1.8em;
+    }
 
-  .game-over-screen {
-      padding: 25px;
-  }
+    .game-over-screen {
+        padding: 30px;
+    }
 
-  .game-over-screen h2 {
-      font-size: 2.2em;
-  }
+    .game-over-screen h2 {
+        font-size: 2.5em;
+    }
 
-  .game-over-screen p {
-      font-size: 1.5em;
-  }
+    .game-over-screen p {
+        font-size: 1.6em;
+    }
 
-  .restart-button {
-      padding: 12px 25px;
-      font-size: 1.3em;
-  }
+    .restart-button {
+        padding: 15px 30px;
+        font-size: 1.5em;
+    }
+    .high-score-display {
+        font-size: 1.2em;
+        top: 15px;
+        right: 15px;
+    }
+    .game-over-buttons button {
+        font-size: 1.4em;
+        padding: 12px 25px;
+    }
+    .pause-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+        top: 10px;
+        right: 10px;
+    }
+    .pause-menu h2 {
+        font-size: 2.5em;
+    }
+    .pause-menu button {
+        width: 180px;
+        font-size: 1.4em;
+        padding: 12px 0;
+    }
 }
 
-/* Medium devices (tablets, 601px to 768px) */
 @media only screen and (min-width: 601px) and (max-width: 768px) {
-  .game-title {
-      font-size: 3em;
-  }
+    .game-title {
+        font-size: 3.5em;
+    }
 
-  .play-button {
-      font-size: 3em;
-      padding: 25px 50px;
-  }
+    .play-button {
+        font-size: 3.5em;
+        padding: 30px 60px;
+    }
 
-  .ready-phase {
-      font-size: 4em;
-  }
+    .ready-phase {
+        font-size: 5em;
+    }
 
-  .lights-grid {
-      width: 450px; /* Sedikit lebih kecil dari desktop */
-      height: 225px;
-      gap: 18px;
-  }
+    .lights-grid {
+        width: 500px;
+        height: 250px;
+        gap: 20px;
+    }
 
-  .light-button {
-      width: 90px;
-      height: 90px;
-  }
+    .light-button {
+        width: 100px;
+        height: 100px;
+        font-size: 2em;
+    }
 }
