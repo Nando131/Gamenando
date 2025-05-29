@@ -1,0 +1,320 @@
+/* General App Styling */
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #2c3e50, #34495e); /* Dark, subtle gradient */
+  color: #ecf0f1;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Prevent scroll issues with animations */
+  position: relative; /* For absolute positioning of borders */
+  padding: 20px; /* Tambahkan padding agar konten tidak terlalu mepet ke pinggir */
+  box-sizing: border-box; /* Pastikan padding tidak menambah lebar total */
+}
+
+.game-title {
+  font-size: 3.5em;
+  font-weight: bold;
+  color: #61dafb; /* React blue */
+  text-shadow: 0 0 15px rgba(97, 218, 251, 0.7);
+  margin-bottom: 50px; /* Space from top/play button */
+  letter-spacing: 2px;
+  text-align: center; /* Pastikan rata tengah di layar kecil */
+  line-height: 1.2; /* Menghindari teks terlalu rapat */
+}
+
+/* --- Initial Screen --- */
+.initial-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Take full height of parent App */
+}
+
+.play-button {
+  font-size: 4em;
+  padding: 30px 60px;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 114, 255, 0.4);
+  transition: all 0.4s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 5px;
+  font-weight: bold;
+  white-space: nowrap; /* Mencegah teks PLAY patah baris */
+}
+
+.play-button:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0, 114, 255, 0.6);
+}
+
+/* Play button animation (when clicked, it moves up) */
+/* Class ini harus ditambahkan ke element App. Contoh di App.jsx: <div className={`App ${gamePhase === 'ready' ? 'ready' : ''}`}> */
+.App.ready .play-button {
+  animation: playButtonUp 0.5s forwards ease-out;
+}
+
+@keyframes playButtonUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-200px); opacity: 0; }
+}
+
+
+/* --- Ready Phase --- */
+.ready-phase {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5em;
+  font-weight: bold;
+  color: #f39c12; /* Orange */
+  text-shadow: 0 0 20px rgba(243, 156, 18, 0.7);
+  animation: fadeInOut 1s ease-in-out infinite alternate; /* Optional: pulse effect */
+  white-space: nowrap; /* Mencegah teks patah baris */
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* --- OSU Borders --- */
+.osu-border {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 20px; /* Lebar border */
+  background-color: #e74c3c; /* Merah cerah ala OSU */
+  z-index: 1000; /* Pastikan di atas elemen lain */
+  transform: translateY(-100%); /* Sembunyikan di atas/bawah */
+  transition: transform 0.6s ease-out; /* Animasi turun */
+}
+
+.osu-border.top {
+  top: 0;
+}
+
+.osu-border.bottom {
+  bottom: 0;
+}
+
+.osu-border.osu-border-in {
+  transform: translateY(0%); /* Turun ke posisi */
+}
+
+
+/* --- Game Area --- */
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparan */
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  z-index: 500; /* Di bawah border tapi di atas latar */
+  max-width: 90%; /* Batasi lebar di layar kecil */
+  width: auto; /* Izinkan lebar menyesuaikan konten */
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 30px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #bdc3c7;
+}
+
+.lights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 kolom */
+  grid-template-rows: repeat(2, 1fr); /* 2 baris, total 8 tombol */
+  gap: 20px; /* Jarak antar tombol */
+  width: 500px; /* Ukuran total grid */
+  height: 250px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  max-width: 100%; /* Pastikan grid tidak melebihi lebar parent */
+  box-sizing: border-box; /* Penting untuk padding */
+}
+
+.light-button {
+  width: 100px; /* Ukuran tombol cahaya */
+  height: 100px;
+  background-color: #34495e; /* Warna default tombol */
+  border-radius: 10px;
+  border: 3px solid #7f8c8d;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  /* Untuk sentuhan di HP */
+  -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru saat disentuh */
+}
+
+.light-button.clickable {
+  cursor: pointer;
+}
+
+.light-button.clickable:hover {
+  transform: scale(1.05);
+  background-color: #4a6681;
+}
+
+.light-button.active {
+  background-color: #61dafb; /* Warna saat menyala (biru terang) */
+  border-color: #61dafb;
+  box-shadow: 0 0 25px rgba(97, 218, 251, 0.9), 0 0 10px rgba(97, 218, 251, 0.7);
+  transform: scale(1.1); /* Sedikit membesar saat nyala */
+}
+
+/* --- Game Over Screen --- */
+.game-over-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: rgba(44, 62, 80, 0.9);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+  z-index: 1001; /* Di atas semuanya */
+  max-width: 90%; /* Batasi lebar di layar kecil */
+  box-sizing: border-box;
+}
+
+.game-over-screen h2 {
+  color: #e74c3c; /* Merah */
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.game-over-screen p {
+  font-size: 1.8em;
+  margin-bottom: 30px;
+}
+
+.restart-button {
+  padding: 15px 30px;
+  font-size: 1.5em;
+  background-color: #27ae60; /* Hijau */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.restart-button:hover {
+  background-color: #2ecc71;
+}
+
+
+/* ==================================================================== */
+/* === MEDIA QUERIES FOR RESPONSIVE DESIGN (FOR MOBILE DEVICES) === */
+/* ==================================================================== */
+
+/* Small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .App {
+      padding: 10px; /* Kurangi padding di layar kecil */
+  }
+
+  .game-title {
+      font-size: 2.2em; /* Perkecil ukuran font judul */
+      margin-bottom: 30px;
+  }
+
+  .play-button {
+      font-size: 2.5em; /* Perkecil ukuran font tombol PLAY */
+      padding: 20px 40px; /* Sesuaikan padding */
+      letter-spacing: 3px;
+  }
+
+  .ready-phase {
+      font-size: 3em; /* Perkecil ukuran font 'Ready' text */
+  }
+
+  .game-info {
+      font-size: 1.2em; /* Perkecil font info game */
+      margin-bottom: 20px;
+  }
+
+  .lights-grid {
+      width: 100%; /* Ambil lebar penuh */
+      height: auto; /* Izinkan tinggi menyesuaikan */
+      grid-template-columns: repeat(2, 1fr); /* Ubah ke 2 kolom di HP */
+      grid-template-rows: repeat(4, 1fr); /* Ubah ke 4 baris */
+      gap: 15px; /* Kurangi jarak antar tombol */
+      padding: 15px;
+  }
+
+  .light-button {
+      width: 100%; /* Tombol memenuhi lebar kolom */
+      padding-bottom: 100%; /* Trick untuk membuat tombol berbentuk kotak (aspect ratio 1:1) */
+      height: 0; /* Set tinggi ke 0 agar padding-bottom yang mengontrol tinggi */
+      border-radius: 8px;
+      font-size: 1.2em; /* Perkecil font tombol */
+  }
+
+  .game-over-screen {
+      padding: 25px;
+  }
+
+  .game-over-screen h2 {
+      font-size: 2.2em;
+  }
+
+  .game-over-screen p {
+      font-size: 1.5em;
+  }
+
+  .restart-button {
+      padding: 12px 25px;
+      font-size: 1.3em;
+  }
+}
+
+/* Medium devices (tablets, 601px to 768px) */
+@media only screen and (min-width: 601px) and (max-width: 768px) {
+  .game-title {
+      font-size: 3em;
+  }
+
+  .play-button {
+      font-size: 3em;
+      padding: 25px 50px;
+  }
+
+  .ready-phase {
+      font-size: 4em;
+  }
+
+  .lights-grid {
+      width: 450px; /* Sedikit lebih kecil dari desktop */
+      height: 225px;
+      gap: 18px;
+  }
+
+  .light-button {
+      width: 90px;
+      height: 90px;
+  }
+}
